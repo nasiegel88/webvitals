@@ -1,0 +1,9 @@
+name: apex
+channels:
+  - conda-forge
+dependencies:
+  - selenium
+  - bs4
+  - webdriver-manager
+  - Jupyter
+  - jproperties
