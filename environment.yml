@@ -7,3 +7,9 @@ dependencies:
   - webdriver-manager
   - Jupyter
   - jproperties
+  - pandas
+  - numpy
+  - lxml
+  - pip
+  - pip:
+    - pywin32
