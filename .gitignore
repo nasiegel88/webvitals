@@ -1,5 +1,5 @@
-webvitals_config.properties # Login credentials
-geckodriver.log # Geckodriver info
-.ipynb_checkpoints/ # Notebook checkpoints
-.wdm/ # webdriver
-data/ # Output tables
+webvitals_config.properties
+geckodriver.log 
+.ipynb_checkpoints/
+.wdm/
+data/
