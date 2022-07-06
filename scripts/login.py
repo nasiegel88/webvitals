@@ -10,14 +10,16 @@ def login():
 
         items_view = configs.items()
         list_keys = []
-        print(f"'{key}' found!") 
+        print(f"'{key}' found!\n") 
         for item in items_view:
-            list_keys.append(item[0])    
+            list_keys.append(item[0])
+            
         # Login attempt (1)
         driver.find_element_by_name("ssousername").send_keys(configs.get("USERNAME")[0])
         driver.find_element_by_name("password").send_keys(configs.get("PASSWORD")[0])
         xpath="/html/body/center/table/tbody/tr[3]/td/font/input[1]"
         driver.find_element_by_xpath(xpath).click()
+        
         # Enter Webvitals
         driver.find_element_by_xpath("/html/body/ul/li[1]/a").click()
         
@@ -31,7 +33,7 @@ def login():
         if any(error_message in e.text for e in errors):
             print("[!] Login failed!")
         else:
-            print("[+] Login successful!")
+            print("[+] Login successful!\n")
             
         f.close()
         
@@ -46,9 +48,11 @@ def login():
                 driver.find_element_by_name("password").send_keys(password)
                 xpath="/html/body/center/table/tbody/tr[3]/td/font/input[1]"
                 driver.find_element_by_xpath(xpath).click()
+                
                 # Enter Webvitals
                 driver.find_element_by_xpath("/html/body/ul/li[1]/a").click()
-                print('Access granted')
+                print('Access granted\n')
+                time.sleep(2)
                 break
             except NoSuchElementException:
                 print('Access denied. Try again.')
