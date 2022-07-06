@@ -53,4 +53,4 @@ def diarrhea_observations(ids):
         os.makedirs('data', exist_ok=True)
         output='webvitals_query.csv'
         timestr = time.strftime("data/%Y%m%d-%H%M%S")
-        df.to_csv(timestr + '-' + 'diarrhea_obs_' + output)
+        df.to_csv(f"{timestr}-diarrhea_obs_{output}")

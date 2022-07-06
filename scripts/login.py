@@ -10,7 +10,7 @@ def login():
 
         items_view = configs.items()
         list_keys = []
-        print("'" + key + "'" + " found!")    
+        print(f"'{key}' found!") 
         for item in items_view:
             list_keys.append(item[0])    
         # Login attempt (1)
