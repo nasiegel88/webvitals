@@ -10,6 +10,7 @@ dependencies:
   - pandas
   - numpy
   - lxml
+  - tqdm
   - pip
   - pip:
     - pywin32
