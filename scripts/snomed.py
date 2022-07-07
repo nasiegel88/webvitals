@@ -13,8 +13,11 @@ def snomed(ids):
             xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[8]/a"
             driver.find_element_by_xpath(xpath).click()
 
+            # Extract table for snomed
             xpath="/html/body/table[2]"
             df = driver.find_element_by_xpath(xpath).get_attribute('outerHTML')
+            
+            # Clean up table
             soup = BeautifulSoup(df, 'html.parser')
             df = pd.read_html(str(soup))[0]
             df.drop(index=df.index[0:3], 
