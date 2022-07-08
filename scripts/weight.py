@@ -1,13 +1,20 @@
 # Weight
 
-def weight(ids):
+def weight(driver, query_list):
+    
+    '''
+    This function will pull animal weights and the dates the weights were taken, and then the function
+    will add how old the animal was in months and days.
+    '''
     
     data = pd.DataFrame()
     
-    with tqdm(total=len(ids)) as progress_bar:
+    with tqdm(total=len(query_list)) as progress_bar:
         
-        for i in ids:
+        for i in query_list:
+            
             # Go to weight TB in Webvitals
+            driver=driver
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
 
@@ -79,8 +86,13 @@ def weight(ids):
 
         # Add object to namespace
         globals()['df'] = df
+        
         # Export table
         os.makedirs('data', exist_ok=True)
         output='webvitals_query.csv'
         timestr = time.strftime("data/%Y%m%d-%H%M%S")
         df.to_csv(f"{timestr}-weight_{output}")
+        
+        print('')
+        file=f"{timestr}-weight_{output}"    
+        print(f"Output file is located at: '{file}'")

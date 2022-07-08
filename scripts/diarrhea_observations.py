@@ -1,13 +1,35 @@
 # Diarrhea observations
 
-def diarrhea_observations(ids):
+import selenium, os, login, time
+
+import pandas as pd
+import numpy as np
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+
+from tqdm import tqdm
+from webdriver_manager.firefox import GeckoDriverManager
+
+def diarrhea_observations(driver, query_list):
+    
+    '''
+    This function will add all diarrhea for CNPRC animals and determine whether
+    the animals had idiopathic chronic diarrhea which is defined as 45 or more 
+    diarrhea observations within a 6-month period.
+    '''
     
     data = pd.DataFrame()
     
-    with tqdm(total=len(ids)) as progress_bar:
+    with tqdm(total=len(query_list)) as progress_bar:
         
-        for i in ids:
+        for i in query_list:
+            
             # Go to Diarrhea section in Webvitals
+            driver = driver
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
             xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[6]/a"
@@ -46,11 +68,17 @@ def diarrhea_observations(ids):
             # Determine if animal meeting qual. for chronic issue
             df['Chronic_diarrhea'] = np.where(
                 df['Rolling_sum_obs'] > 45, 1, np.where(
-                df['Rolling_sum_obs'] < 45, 0, 0))       
+                df['Rolling_sum_obs'] < 45, 0, 0))   
+            
         # Add object to namespace
         globals()['df'] = df
+        
         # Export table
         os.makedirs('data', exist_ok=True)
         output='webvitals_query.csv'
         timestr = time.strftime("data/%Y%m%d-%H%M%S")
         df.to_csv(f"{timestr}-diarrhea_obs_{output}")
+     
+    print('')
+    file=f"{timestr}-diarrhea_obs_{output}"    
+    print(f"Output file is located at: '{file}'")

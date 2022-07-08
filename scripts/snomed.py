@@ -1,12 +1,18 @@
-def snomed(ids):
+def snomed(driver, query_list):
+    
+    '''
+    This function will pull all animal records for the time the animal was at
+    the CNPRC.
+    '''
     
     data = pd.DataFrame()
     
-    with tqdm(total=len(ids)) as progress_bar:
+    with tqdm(total=len(query_list)) as progress_bar:
         
-        for i in ids:
+        for i in query_list:
             
             # Go to snomed in Webvitals
+            driver=driver
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
 
@@ -39,5 +45,16 @@ def snomed(ids):
 
             # Log job progess
             progress_bar.update(1)
-
+            
+        # Add object to namespac
         globals()['df'] = df
+        
+        # Export table
+        os.makedirs('data', exist_ok=True)
+        output='webvitals_query.csv'
+        timestr = time.strftime("data/%Y%m%d-%H%M%S")
+        df.to_csv(f"{timestr}-snomed_{output}")
+        
+        print('')
+        file=f"{timestr}-relocation_{output}"    
+        print(f"Output file is located at: '{file}'")

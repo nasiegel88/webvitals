@@ -1,14 +1,29 @@
 # Location
+import selenium, os, login, time
 
-def location(ids):
+import pandas as pd
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
+
+from tqdm import tqdm
+from webdriver_manager.firefox import GeckoDriverManager
+
+def location(driver, query_list):
+    
     
     data = pd.DataFrame()
     
-    with tqdm(total=len(ids)) as progress_bar:
+    with tqdm(total=len(query_list)) as progress_bar:
         
-        for i in ids:
+        for i in query_list:
 
             # Go to relocation history in Webvitals
+            driver = driver
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
 
@@ -17,9 +32,15 @@ def location(ids):
             driver.find_element_by_xpath(xpath).click()
 
             # Look for cause of death if animal has passed 
-            xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[11]"
-            cause_of_death = driver.find_element_by_xpath(xpath).text
+            
+            try:
+                xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[11]"
+                cause_of_death = driver.find_element_by_xpath(xpath).text
 
+            except NoSuchElementException: 
+                xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[1]/td[4]"
+                cause_of_death = driver.find_element_by_xpath(xpath).text
+           
             # Go to relocation history in Webvitals
             xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[5]/a"
             driver.find_element_by_xpath(xpath).click()
@@ -60,16 +81,19 @@ def location(ids):
             .loc[data['Location'] == 'DEAD']
             .rename(columns={"Date In":"Dead"})
         )[['MMU', 'Dead']]
+        
         # Merge dataframes
         df = (
             data
             .merge(death, on='MMU', how='left')
             .dropna()
         )
+        
         # Convert age to numeric
         df['Year'] = pd.to_numeric(df['Year'])
         df['Month'] = pd.to_numeric(df['Month'])
         df['Day'] = pd.to_numeric(df['Day'])
+        
         # List age in months
         day_year = 365.2425
         day_month = 30.436875
@@ -77,10 +101,16 @@ def location(ids):
         df['Months'] = df.Days.div(day_month)
         df.drop(['Year', 'Month', 'Day', 'Days', 'Time'],inplace=True, axis=1)
         df = df.round(2)
+        
         # Add object to namespace
         globals()['df'] = df
+        
         # Export table
         os.makedirs('data', exist_ok=True)
         output='webvitals_query.csv'
         timestr = time.strftime("data/%Y%m%d-%H%M%S")
         df.to_csv(f"{timestr}-relocation_{output}")
+        
+    print('')
+    file=f"{timestr}-relocation_{output}"    
+    print(f"Output file is located at: '{file}'")
