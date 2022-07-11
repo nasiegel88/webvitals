@@ -1,16 +1,15 @@
-name: apex
+name: webvitals
 channels:
   - conda-forge
 dependencies:
-  - selenium
-  - bs4
-  - webdriver-manager
-  - Jupyter
-  - jproperties
-  - pandas
-  - numpy
-  - lxml
-  - tqdm
-  - pip
+  - selenium=3.11.0
+  - bs4=4.11.1
+  - webdriver-manager=3.7.1
+  - jproperties=2.1.1
+  - pandas=0.22.0
+  - numpy=1.15.4
+  - lxml=4.2.1
+  - tqdm=4.64.0
+  - pip=21.3.1
   - pip:
-    - pywin32
+    - pywin32==304
