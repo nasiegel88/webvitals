@@ -1,6 +1,6 @@
 # Diarrhea observations
 
-import selenium, os, login, time
+import selenium, os, time
 
 import pandas as pd
 import numpy as np
