@@ -126,8 +126,7 @@ options = Options()
 options.add_argument("--headless")
 
 # Install Geckodriver
-driver = webdriver.Firefox(executable_path=GeckoDriverManager(version="v0.20.0").install(),
-                          options=options)
+driver = webdriver.Firefox(executable_path=GeckoDriverManager(version="v0.21.0").install(), options=options)
 
 # Go to login page
 driver.get("https://davos.primate.ucdavis.edu/login/")
