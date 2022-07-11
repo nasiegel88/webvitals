@@ -53,8 +53,9 @@ def snomed(driver, query_list):
         os.makedirs('data', exist_ok=True)
         output='webvitals_query.csv'
         timestr = time.strftime("data/%Y%m%d-%H%M%S")
+        absolute_path = os.path.abspath(timestr)
         df.to_csv(f"{timestr}-snomed_{output}")
         
         print('')
-        file=f"{timestr}-relocation_{output}"    
+        file=f"{absolute_path}-relocation_{output}"    
         print(f"Output file is located at: '{file}'")
