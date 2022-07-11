@@ -1,4 +1,4 @@
-import argparse, pathlib, os, time
+import argparse, pathlib, os, time, getpass
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -23,7 +23,7 @@ def login():
     This function will log into webvitals. Create a `webvitals_config.properties` file with your username
     and password if you want to avoid entering your login credentials each time the program is ran.
     '''
-    key="webvitals_config.properties"
+    key="webvitals_-config.properties"
 
     try:
         f = open(key)
@@ -126,7 +126,7 @@ options = Options()
 options.add_argument("--headless")
 
 # Install Geckodriver
-driver = webdriver.Firefox(executable_path=GeckoDriverManager(version="v0.21.0").install(), options=options)
+driver = webdriver.Firefox(executable_path=GeckoDriverManager(version="v0.22.0").install(), options=options)
 
 # Go to login page
 driver.get("https://davos.primate.ucdavis.edu/login/")
