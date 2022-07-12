@@ -39,10 +39,10 @@ def snomed(driver, query_list):
 
                         # Extract table for snomed
                         xpath="/html/body/table[2]"
-                        df = driver.find_element_by_xpath(xpath).get_attribute('outerHTML')
+                        tableelement = driver.find_element_by_xpath(xpath).get_attribute('outerHTML')
                         
                         # Clean up table
-                        soup = BeautifulSoup(df, 'html.parser')
+                        soup = BeautifulSoup(tableelement, 'html.parser')
                         df = pd.read_html(str(soup))[0]
                         df.drop(index=df.index[0:3], 
                                 axis=0, 
@@ -59,12 +59,13 @@ def snomed(driver, query_list):
                         table = df.ffill()
 
                         # Append dataframes into one dataframe
-                        df = data.append(table, ignore_index=True)
+                        data = data.append(table, ignore_index=True)
 
-                        # Log job progess
+                        # Log job progress
                         progress_bar.update(1)
-                
-        # Add object to namespac
+                        
+        # Add object to namespace
+        df = data
         globals()['df'] = df
 
         # Export table
