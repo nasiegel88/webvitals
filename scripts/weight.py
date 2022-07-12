@@ -1,5 +1,20 @@
 # Weight
 
+import selenium, os, time, datetime
+
+import pandas as pd
+import dateutil.parser as dparser
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
+
+from tqdm import tqdm
+from webdriver_manager.firefox import GeckoDriverManager
+
 def weight(driver, query_list):
     
     '''
