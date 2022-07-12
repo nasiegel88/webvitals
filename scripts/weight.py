@@ -40,6 +40,7 @@ def weight(driver, query_list):
             # Extract birthday
             xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[5]/td[2]"
             birthday = driver.find_element_by_xpath(xpath).text
+            print(birthday)
 
             xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[10]/a"
             driver.find_element_by_xpath(xpath).click()
@@ -81,7 +82,7 @@ def weight(driver, query_list):
         # Drop non-informative data
         df = data.drop(columns = ['Body Condition', 'Conception ID',
                                   'Days Pregnant', 'TB', 'Tattoo',
-                                  'Test 1', 'Test 2'])
+                                  'Test 1', 'Test 2'], errors='ignore')
         # Convert to datetime
         ## List age in months
         day_month = 30.436875
