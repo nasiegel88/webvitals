@@ -23,7 +23,7 @@ def login():
     This function will log into webvitals. Create a `webvitals_config.properties` file with your username
     and password if you want to avoid entering your login credentials each time the program is ran.
     '''
-    key="webvitals_-config.properties"
+    key="webvitals_config.properties"
 
     try:
         f = open(key)
@@ -147,7 +147,7 @@ elif args.query=='diarrhea_observations':
 elif args.query=='weight':
     print('Running weight query')
     time.sleep(2)
-    weight.weight()
+    weight.weight(driver, query_list)
 
 elif args.query=='snomed':
     print('Running snomed query')
