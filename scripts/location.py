@@ -86,8 +86,8 @@ def location(driver, query_list):
         df = (
             data
             .merge(death, on='MMU', how='left')
-            .dropna()
         )
+        df[df["Location"].str.contains("DEAD")==False]
         
         # Convert age to numeric
         df['Year'] = pd.to_numeric(df['Year'])
