@@ -60,7 +60,7 @@ def diarrhea_observations(driver, query_list):
             # Replace all diarrhea obs with 1
             df = df.replace(dict.fromkeys(['D', '+D', '~D', '-D', '-DM'], ['1']))
             # Replace all move obs with 0
-            df = df.replace(dict.fromkeys(['M', '+M', '~M', '-M', '~MM', '+MM', '+', '-', '~'], ['0']))
+            df = df.replace(dict.fromkeys(['M', '+M', '~M', '-M', '~MM', '-MM', '+MM', '+', '-', '~'], ['0']))
             # Sum monthly diarrhea obs
             df['Month_diarrhea_obs'] = df.iloc[:,3:31].astype(int).sum(axis=1, numeric_only=True)
             # Calcualte the # of obs in a 6-month window
