@@ -18,8 +18,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 def weight(driver, query_list):
     
     '''
-    This function will pull animal weights and the dates the weights were taken, and then the function
-    will add how old the animal was in months and days.
+    This module will pull animal weights and the dates the weights were taken and then the function will add how old the animal was in months and days.
     '''
     
     data = pd.DataFrame()

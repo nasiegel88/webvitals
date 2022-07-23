@@ -15,7 +15,10 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 def location(driver, query_list):
     
-    
+    '''
+    This module will measure how long an animal spent at any location in the primate center and record the time spent
+    in at each location. The module will also pull information on whether an animal died at a location.
+    '''    
     data = pd.DataFrame()
     
     with tqdm(total=len(query_list)) as progress_bar:

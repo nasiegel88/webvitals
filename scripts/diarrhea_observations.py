@@ -17,9 +17,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 def diarrhea_observations(driver, query_list):
     
     '''
-    This function will add all diarrhea for CNPRC animals and determine whether
-    the animals had idiopathic chronic diarrhea which is defined as 45 or more 
-    diarrhea observations within a 6-month period.
+    This module will add all diarrhea observations for CNPRC animals and determine whether the animals had idiopathic chronic diarrhea (ICD) which is defined as 45 or more diarrhea observations within a 6-month period according to Blackwood et al., 2008 Comp. Med.
     '''
     
     data = pd.DataFrame()
