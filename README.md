@@ -2,17 +2,17 @@
 
 ## Introduction
 
-Users: Employees at the Primate Center are the expected users of this software. Webvitals can only be accessed from within the Primate Center intranet and requires to credentials to access the website. Users will need to have IT run the installation as it requires admin privileges.
+__Users:__ Employees at the Primate Center are the expected users of this software. Webvitals can only be accessed from within the Primate Center intranet and requires credentials to access the website. Users will need to have IT run the installation as it requires admin privileges.
 
-Purpose: This software is to be used to aid users in performing large animal queries from within the Primate Center's database. Available parameters include `location`, `weight`, `snomed`, and `diarrhea observations`.
+__Purpose:__ This software is to be used to aid users in performing large animal queries from within the Primate Center's database. Available parameters include `location`, `weight`, `snomed`, and `diarrhea observations`.
 
 ## Installation
 
-Due to the age of the Webvitals website, the only to way launch it is with an older version of Firefox. Note that Firefox 56 will not replace and update to date versions of Firefox. Furthermore, this program has only been tested on Windows, which is another result of aged Webvitals platform.
+Due to the age of the Webvitals website, the only to way launch it is with an older version of Firefox. Note that Firefox 56 will not replace any update-to-date versions of Firefox and will instead by installed as a separate application. Furthermore, this program has only been tested on Windows, which is another result of the aged Webvitals platform.
 
 #### Install Firefox 56
 
-Make sure you have Firefox 56 installed on your system. If the required version of Firefox is not alread installed, it installation file can be found [here](https://ftp.mozilla.org/pub/firefox/releases/56.0.2/win64/en-US/).
+Make sure you have Firefox 56 installed on your system. If the required version of Firefox is not already installed, its installation file can be found [here](https://ftp.mozilla.org/pub/firefox/releases/56.0.2/win64/en-US/).
 
 #### Install Miniconda for Windows
 
@@ -47,13 +47,13 @@ conda env create -n webvitals -f environment.yml
 conda activate webvitals
 ```
 
-The about will only need to be done once however, when the program used the environment must be activated before running any of the below commands.
+The above will only need to be done once however when the program is used the environment must be activated before running any of the below commands.
 
 ## Usage
 
 #### Directory layout.
 
-Users should not need to edit any files with the exception of `webvitals_config.properties` which can be to store login credentials locally so as to avoid having to enter username and password information with every query.
+Users should not need to edit any files with the exception of `webvitals_config.properties` which can be used to store login credentials locally so as to avoid having to enter username and password information with every query.
 
 ```bash
 apex_webscrape
@@ -81,7 +81,7 @@ Create `webvitals_config.properties`
 touch webvitals_config.properties
 ```
 
-Store credentails. Note, this file is listed in .gitigore so even if changes are made to the repo by user wanting to fork this repo login information will remain secure. Now edit the file...
+__Store credentails.__ Note, this file is listed in .gitigore so even if changes are made to the repo by user wanting to fork this repo login information will remain secure. Now edit the file...
 
     # Open a text editor, like vim
     vim webvitals_config.properties
@@ -89,8 +89,8 @@ Store credentails. Note, this file is listed in .gitigore so even if changes are
 webvitals_config.properties
 
     # Webvitals login information
-    USERNAME=`<Your Primate Webvitals username>`
-    PASSWORD=`<Your Primate Webvitals password>`
+    USERNAME=`<Your Primate Webvitals Username>`
+    PASSWORD=`<Your Primate Webvitals Password>`
 
 #### Running the program
 
@@ -104,15 +104,15 @@ webvitals_config.properties
       -f FILE, --file FILE  text input
       -q [{location,diarrhea_observations,weight,snomed}], --query [{location,diarrhea_observations,weight,snomed}]
 
-Animal queries can be entered as a list or text file. When entering ids in list make sure to avoid spaces and use commas.
+Animal queries can be entered as a list or text file. When entering ids as a list make sure to avoid spaces, and use commas and double quotation marks.
 
-Example list
+__Example list__
 
 ```bash
 python webvitals.py --list "<animal 1>,<animal 2>,<animal 3>" --query location
 ```
 
-Example text file (test.txt)
+__Example text file (test.txt)__
 
     <animal 1>
     <animal 2>
