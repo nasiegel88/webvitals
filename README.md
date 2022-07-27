@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Users: Employees at the CNPRC are the expected users of this software. Webvitals can only be accessed from within the Primate Center intranet and requires to credentials to access the website.
+Users: Employees at the Primate Center are the expected users of this software. Webvitals can only be accessed from within the Primate Center intranet and requires to credentials to access the website. Users will need to have IT run the installation as it requires admin privileges.
 
 Purpose: This software is to be used to aid users in performing large animal queries from within the Primate Center's database. Available parameters include `location`, `weight`, `snomed`, and `diarrhea observations`.
 
@@ -12,32 +12,32 @@ Due to the age of the Webvitals website, the only to way launch it is with an ol
 
 #### Install Firefox 56
 
-Make sure you have Firefox 56 installed on your system. If the required version of Firefox is not alread installed, it installation file can be found [here](https://ftp.mozilla.org/pub/firefox/releases/56.0.2/win64/en-US/)
+Make sure you have Firefox 56 installed on your system. If the required version of Firefox is not alread installed, it installation file can be found [here](https://ftp.mozilla.org/pub/firefox/releases/56.0.2/win64/en-US/).
 
 #### Install Miniconda for Windows
 
-Miniconda for windows can be installed [here](https://docs.conda.io/en/latest/miniconda.html#windows-installers)
+Miniconda for windows can be installed [here](https://docs.conda.io/en/latest/miniconda.html#windows-installers).
 
 #### Install Git
 
 Git will be required for downloading the software from Github. In order to download repos from GitHub users will need a GitHub account. If you do not have a GitHub account one can be made for free [here](https://github.com/join).
 
-The below command will install Git to your base environment
+The below command will install Git to your base environment.
 
-``` bash
+```bash
 conda install -c conda-forge git
 ```
 
-Associate Git with your installation of Miniconda prompt
+Associate Git with your installation of Miniconda prompt.
 
-``` bash
+```bash
 git config --global user.name <Your_Git_username>
 git config --global user.email <Your_Git_email>
 ```
 
 ### Clone this repo and create the environment
 
-``` bash
+```bash
 git clone https://github.com/nasiegel88/apex_webscrape.git
 
 # Create environment
@@ -77,7 +77,7 @@ apex_webscrape
 
 Create `webvitals_config.properties`
 
-``` bash
+```bash
 touch webvitals_config.properties
 ```
 
@@ -89,8 +89,8 @@ Store credentails. Note, this file is listed in .gitigore so even if changes are
 webvitals_config.properties
 
     # Webvitals login information
-    USERNAME=<Your CNPRC Webvitals username>
-    PASSWORD=<Your CNPRC Webvitals password>
+    USERNAME=`<Your Primate Webvitals username>`
+    PASSWORD=`<Your Primate Webvitals password>`
 
 #### Running the program
 
@@ -108,7 +108,7 @@ Animal queries can be entered as a list or text file. When entering ids in list 
 
 Example list
 
-``` bash
+```bash
 python webvitals.py --list "<animal 1>,<animal 2>,<animal 3>" --query location
 ```
 
@@ -118,6 +118,10 @@ Example text file (test.txt)
     <animal 2>
     <animal 3>
 
-``` bash
+```bash
 python webvitals.py --file text.txt --query location
 ```
+
+## Final remark
+
+This package is to only be used at the Primate Center for research purposes!

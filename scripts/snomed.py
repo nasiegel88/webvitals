@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 def snomed(driver, query_list):
         
         '''
-        This module will pull all animal records for the time the animal was at the CNPRC-- this includes antibiotics, food, medication, etc.
+        This module will pull all animal records for the time the animal was at the Primate Center-- this includes antibiotics, food, medication, etc.
         '''
         
         data = pd.DataFrame()
