@@ -3,6 +3,7 @@
 import selenium, os, time, datetime
 
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
 import dateutil.parser as dparser
 
 from selenium import webdriver
@@ -84,20 +85,30 @@ def weight(driver, query_list):
                                 'Test 1', 'Test 2'], errors='ignore')
     # Convert to datetime
     ## List age in months
-    day_month = 30.436875
-    df[["Birth", "Weighing Date"]] = df[["Birth", "Weighing Date"]].apply(pd.to_datetime)
+    
+    if (is_numeric_dtype(df['Birth'])):
+    # Ignore date conversions if animal is missing table in xpath
+    
+        day_month = 30.436875
+        df[["Birth", "Weighing Date"]] = df[["Birth", "Weighing Date"]].apply(pd.to_datetime)
 
-    # Calculate age in days
-    df['Age_days'] = (df['Weighing Date'] - df['Birth']).dt.days
+        # Calculate age in days
+        df['Age_days'] = (df['Weighing Date'] - df['Birth']).dt.days
 
-    # Calculate age in months
-    df['Age_months'] = df.Age_days.div(day_month).round(2)
+        # Calculate age in months
+        df['Age_months'] = df.Age_days.div(day_month).round(2)
 
-    # Reorder columns
-    column_names = ['MMU', 'Location', 'Birth',
-                    'Weighing Date', 'Age_days',
-                    'Age_months', 'Weight']
-    df = df.reindex(columns=column_names)
+        # Reorder columns
+        column_names = ['MMU', 'Location', 'Birth',
+                        'Weighing Date', 'Age_days',
+                        'Age_months', 'Weight']
+        df = df.reindex(columns=column_names)
+    else:
+        # Reorder columns
+        column_names = ['MMU', 'Location', 'Birth',
+                        'Weighing Date', 'Age_days',
+                        'Age_months', 'Weight']
+        df = df.reindex(columns=column_names)        
 
     # Add object to namespace
     globals()['df'] = df
