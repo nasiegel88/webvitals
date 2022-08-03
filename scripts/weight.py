@@ -53,15 +53,27 @@ def weight(driver, query_list):
                     xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[10]/a"
                     driver.find_element_by_xpath(xpath).click()
 
-                    # Extract html table
-                    xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
-                    tableelement= (
-                        WebDriverWait(driver,10)
-                        .until(EC.visibility_of_element_located((By.XPATH, xpath)))
-                        .get_attribute('outerHTML')
-                    )        
-                    table = pd.read_html(str(tableelement))[0]
-
+                    try:
+                        # Extract html table
+                        xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
+                        tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
+                        table = pd.read_html(str(tableelement))[0]
+                        
+                    except Exception as e:
+                        xpath='/html/body/table[2]/tbody/tr/td[1]/h4'
+                        no_record = driver.find_element_by_xpath(xpath).text                    
+                        no_data = {
+                            'Weighing Date':[no_record],
+                            'Weight':[no_record],
+                            'TB':[no_record],
+                            'Test 1':[no_record],
+                            'Test 2':[no_record],
+                            'Tattoo':[no_record],
+                            'Body Condition':[no_record],
+                            'Location':[no_record]
+                        }
+                        table = pd.DataFrame(no_data)
+                        
                     # Add column to specify MMU number
                     table['MMU'] = i
                     first_column = table.pop('MMU')
