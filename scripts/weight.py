@@ -60,17 +60,16 @@ def weight(driver, query_list):
                         table = pd.read_html(str(tableelement))[0]
                         
                     except Exception as e:
-                        xpath='/html/body/table[2]/tbody/tr/td[1]/h4'
-                        no_record = driver.find_element_by_xpath(xpath).text                    
+                        # Create empty table if one does not exist for animal                   
                         no_data = {
-                            'Weighing Date':[no_record],
-                            'Weight':[no_record],
-                            'TB':[no_record],
-                            'Test 1':[no_record],
-                            'Test 2':[no_record],
-                            'Tattoo':[no_record],
-                            'Body Condition':[no_record],
-                            'Location':[no_record]
+                            'Weighing Date':[None],
+                            'Weight':[None],
+                            'TB':[None],
+                            'Test 1':[None],
+                            'Test 2':[None],
+                            'Tattoo':[None],
+                            'Body Condition':[None],
+                            'Location':[None]
                         }
                         table = pd.DataFrame(no_data)
                         
@@ -97,30 +96,21 @@ def weight(driver, query_list):
                                 'Test 1', 'Test 2'], errors='ignore')
     # Convert to datetime
     ## List age in months
-    
-    if (is_numeric_dtype(df['Birth'])):
-    # Ignore date conversions if animal is missing table in xpath
-    
-        day_month = 30.436875
-        df[["Birth", "Weighing Date"]] = df[["Birth", "Weighing Date"]].apply(pd.to_datetime)
+    day_month = 30.436875
+    df[["Birth", "Weighing Date"]] = df[["Birth", "Weighing Date"]].apply(pd.to_datetime)
 
-        # Calculate age in days
-        df['Age_days'] = (df['Weighing Date'] - df['Birth']).dt.days
+    # Calculate age in days
+    df['Age_days'] = (df['Weighing Date'] - df['Birth']).dt.days
 
-        # Calculate age in months
-        df['Age_months'] = df.Age_days.div(day_month).round(2)
+    # Calculate age in months
+    df['Age_months'] = df.Age_days.div(day_month).round(2)
 
-        # Reorder columns
-        column_names = ['MMU', 'Location', 'Birth',
-                        'Weighing Date', 'Age_days',
-                        'Age_months', 'Weight']
-        df = df.reindex(columns=column_names)
-    else:
-        # Reorder columns
-        column_names = ['MMU', 'Location', 'Birth',
-                        'Weighing Date', 'Age_days',
-                        'Age_months', 'Weight']
-        df = df.reindex(columns=column_names)        
+    # Reorder columns
+    column_names = ['MMU', 'Location', 'Birth',
+                    'Weighing Date', 'Age_days',
+                    'Age_months', 'Weight']
+    df = df.reindex(columns=column_names)
+               
 
     # Add object to namespace
     globals()['df'] = df
