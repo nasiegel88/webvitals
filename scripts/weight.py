@@ -48,7 +48,11 @@ def weight(driver, query_list):
                         xpath='/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[4]/td[2]'
                         birthday = driver.find_element_by_xpath(xpath).text
                         dt = dparser.parse(birthday.split()[0], fuzzy=True)
-                        birthday = dt.strftime('%Y-%m-%d')   
+                        birthday = dt.strftime('%Y-%m-%d')  
+                        
+                    # Extract Sex
+                    xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[1]/td[2]"
+                    sex=driver.find_element_by_xpath(xpath).text
 
                     xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[10]/a"
                     driver.find_element_by_xpath(xpath).click()
@@ -60,7 +64,7 @@ def weight(driver, query_list):
                         table = pd.read_html(str(tableelement))[0]
                         
                     except Exception as e:
-                        # Create empty table if one does not exist for animal                   
+                        # Create empty table if one does not exist for animals                   
                         no_data = {
                             'Weighing Date':[None],
                             'Weight':[None],
@@ -83,6 +87,13 @@ def weight(driver, query_list):
                     ninth_column = table.pop('Birth')
                     table.insert(8, 'Birth', ninth_column)
                     table.loc[table['MMU'] == i, ['Birth']] = birthday
+                    
+                    # Add Sex column
+                    table['Sex']= sex
+                    second_column = table.pop('Sex')
+                    table.insert(2, 'Sex', second_column)
+                    table['Sex'] = table['Sex'].str.replace('M', 'Male')
+                    table['Sex'] = table['Sex'].str.replace('F', 'Female')
 
                     # Append dataframes into one dataframe
                     data = data.append(table, ignore_index=True)
@@ -106,7 +117,7 @@ def weight(driver, query_list):
     df['Age_months'] = df.Age_days.div(day_month).round(2)
 
     # Reorder columns
-    column_names = ['MMU', 'Location', 'Birth',
+    column_names = ['MMU', 'Sex', 'Location', 'Birth',
                     'Weighing Date', 'Age_days',
                     'Age_months', 'Weight']
     df = df.reindex(columns=column_names)
