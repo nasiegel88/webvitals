@@ -75,5 +75,5 @@ def snomed(driver, query_list):
         df.to_csv(f"{timestr}-snomed_{output}")
 
         print('')
-        file=f"{absolute_path}-relocation_{output}"    
+        file=f"{absolute_path}-snomed_{output}"    
         print(f"Output file is located at: '{file}'")
