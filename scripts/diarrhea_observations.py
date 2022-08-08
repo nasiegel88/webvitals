@@ -30,8 +30,19 @@ def diarrhea_observations(driver, query_list):
             driver = driver
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
-            xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[6]/a"
-            driver.find_element_by_xpath(xpath).click()
+            
+            try:
+                # Return to Animal Summary
+                xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[6]/a"
+                driver.find_element_by_xpath(xpath).click()
+                
+            except NoSuchElementException:
+                s = '''\
+                Animal Number {animal_num} Not Found! 
+                Please be sure you entered a valid animal ID.\
+                '''.format(animal_num=i)
+                print(s)
+                sys.exit(1)
 
             # Extract html table
             xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"

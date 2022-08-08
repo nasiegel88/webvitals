@@ -30,12 +30,20 @@ def location(driver, query_list):
             driver.find_element_by_name("query_input").send_keys(i)
             driver.find_element_by_name("submit").click()
 
-            # Return to Animal Summary
-            xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[1]/a"
-            driver.find_element_by_xpath(xpath).click()
+            try:
+                # Return to Animal Summary
+                xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[1]/a"
+                driver.find_element_by_xpath(xpath).click()
+                
+            except NoSuchElementException:
+                s = '''\
+                Animal Number {animal_num} Not Found! 
+                Please be sure you entered a valid animal ID.\
+                '''.format(animal_num=i)
+                print(s)
+                sys.exit(1)
 
             # Look for cause of death if animal has passed 
-            
             try:
                 xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[11]"
                 cause_of_death = driver.find_element_by_xpath(xpath).text

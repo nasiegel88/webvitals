@@ -33,9 +33,18 @@ def weight(driver, query_list):
                     driver.find_element_by_name("query_input").send_keys(i)
                     driver.find_element_by_name("submit").click()
 
-                    # Return to Animal Summary
-                    xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[1]/a"
-                    driver.find_element_by_xpath(xpath).click()
+                    try:
+                        # Return to Animal Summary
+                        xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[1]/a"
+                        driver.find_element_by_xpath(xpath).click()
+                        
+                    except NoSuchElementException:
+                        s = '''\
+                        Animal Number {animal_num} Not Found! 
+                        Please be sure you entered a valid animal ID.\
+                        '''.format(animal_num=i)
+                        print(s)
+                        sys.exit(1)
 
                     # Extract birthday
                     try:
@@ -53,7 +62,8 @@ def weight(driver, query_list):
                     # Extract Sex
                     xpath="/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[1]/td[2]"
                     sex=driver.find_element_by_xpath(xpath).text
-
+                    
+                    # Go to weight table
                     xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[10]/a"
                     driver.find_element_by_xpath(xpath).click()
 

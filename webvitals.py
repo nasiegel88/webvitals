@@ -13,6 +13,7 @@ from scripts import location
 from scripts import diarrhea_observations
 from scripts import weight
 from scripts import snomed
+from scripts import conception
 
 # Create parser
 parser = ArgumentParser()
@@ -24,7 +25,7 @@ parser.add_argument('-f', '--file', help='text input', type=pathlib.Path)
 parser.add_argument('-q', '--query', 
                     nargs="?",
                     choices=['location', 'diarrhea_observations',
-                             'weight', 'snomed'],
+                             'weight', 'snomed', 'conception'],
                     default='location'
                     )
 
@@ -84,6 +85,11 @@ elif args.query=='snomed':
     print('Running snomed query')
     time.sleep(2)
     snomed.snomed(driver, query_list)
+    
+elif args.query=='conception':
+    print('Running conception query')
+    time.sleep(2)
+    conception.conception(driver, query_list)
 
 print('')
 print('Driver Title:',driver.title)
