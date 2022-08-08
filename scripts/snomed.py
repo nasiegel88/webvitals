@@ -1,6 +1,6 @@
 # Snomed
 
-import selenium, os, time, sys
+import selenium, os, time
 
 import pandas as pd
 
