@@ -1,5 +1,5 @@
 # Location
-import selenium, os, time
+import selenium, os, time, sys
 
 import pandas as pd
 
@@ -41,7 +41,7 @@ def location(driver, query_list):
                 Please be sure you entered a valid animal ID.\
                 '''.format(animal_num=i)
                 print(s)
-                sys.exit(1)
+                continue
 
             # Look for cause of death if animal has passed 
             try:
@@ -56,15 +56,21 @@ def location(driver, query_list):
             xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[3]/tbody/tr/td[5]/a"
             driver.find_element_by_xpath(xpath).click()
 
-            # Extract html table
-            xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
-            tableelement= (
-                WebDriverWait(driver,10)
-
-                .until(EC.visibility_of_element_located((By.XPATH, xpath)))
-                .get_attribute('outerHTML')
-            )        
-            table = pd.read_html(str(tableelement))[0]
+            try:
+                # Extract html table
+                xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
+                tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
+                table = pd.read_html(str(tableelement))[0]
+                
+            except Exception as e:
+                        # Create empty table if one does not exist for animals 
+                        no_data =  {
+                            'Date In':[None],
+                            'Location':[None],
+                            'Date Out':[None],
+                            'Time at Locationyr : mon : day':[None]
+                        }
+                        table = pd.DataFrame(no_data)
 
             # Add column to specify MMU number
             table['MMU'] = i

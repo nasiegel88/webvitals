@@ -1,6 +1,6 @@
 # Snomed
 
-import selenium, os, time
+import selenium, os, time, sys
 
 import pandas as pd
 
@@ -44,8 +44,8 @@ def snomed(driver, query_list):
                                 Please be sure you entered a valid animal ID.\
                                 '''.format(animal_num=i)
                                 print(s)
-                                sys.exit(1)
-
+                                continue
+                                
                         # Extract table for snomed
                         xpath="/html/body/table[2]"
                         tableelement = driver.find_element_by_xpath(xpath).get_attribute('outerHTML')
@@ -60,12 +60,29 @@ def snomed(driver, query_list):
                                 1, inplace=True)
                         df.drop(df.tail(5).index,
                                 inplace = True)
-
+                        
+                        # Make empty table if no data is returned for animal
+                        if len(df.columns) == 0:
+                                no_data = {
+                                        'Date':[None],
+                                        'Info Qualifier':[None],
+                                        'Seq':[None],
+                                        'Code':[None],
+                                        'Nomenclature':[None]
+                                }
+                                df = pd.DataFrame(no_data)
+                                
                         # Add column to specify MMU number
                         df['MMU'] = i
                         first_column = df.pop('MMU')
                         df.insert(0, 'MMU', first_column)
                         table = df.ffill()
+                        
+                        # Reorder column index
+                        column_names = [
+                        'MMU', 'Date', 'Info Qualifier', 'Seq', 'Code', 'Nomenclature'
+                        ]
+                        table = table.reindex(columns=column_names)
 
                         # Append dataframes into one dataframe
                         data = data.append(table, ignore_index=True)

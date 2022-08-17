@@ -1,6 +1,6 @@
 # Weight
 
-import selenium, os, time, datetime
+import selenium, os, time, datetime, sys
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -44,7 +44,7 @@ def weight(driver, query_list):
                         Please be sure you entered a valid animal ID.\
                         '''.format(animal_num=i)
                         print(s)
-                        sys.exit(1)
+                        continue
 
                     # Extract birthday
                     try:

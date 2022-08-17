@@ -1,6 +1,6 @@
 # Diarrhea observations
 
-import selenium, os, time
+import selenium, os, time, sys
 
 import pandas as pd
 import numpy as np
@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
 
 from tqdm import tqdm
 from webdriver_manager.firefox import GeckoDriverManager
@@ -42,15 +43,11 @@ def diarrhea_observations(driver, query_list):
                 Please be sure you entered a valid animal ID.\
                 '''.format(animal_num=i)
                 print(s)
-                sys.exit(1)
+                continue
 
             # Extract html table
             xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
-            tableelement= (
-                WebDriverWait(driver,10)
-                .until(EC.visibility_of_element_located((By.XPATH, xpath)))
-                .get_attribute('outerHTML')
-            )        
+            tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
             table = pd.read_html(str(tableelement))[0]
 
             # Add column to specify MMU number

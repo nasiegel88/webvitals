@@ -1,6 +1,6 @@
 # Conception
 
-import selenium, os, time, datetime
+import selenium, os, time, datetime, sys
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -44,7 +44,7 @@ def conception(driver, query_list):
                     Please be sure you entered a valid animal ID.\
                         '''.format(animal_num=i)
                         print(s)
-                        sys.exit(1)
+                        continue
                                             
                     # Go to conception table
                     xpath='/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[4]/a'
@@ -53,18 +53,8 @@ def conception(driver, query_list):
                     try:
                         # Extract html table
                         xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
-                        tableelement= (
-                            WebDriverWait(driver,2)
-
-                            .until(EC.visibility_of_element_located((By.XPATH, xpath)))
-                            .get_attribute('outerHTML')
-                        )        
+                        tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
                         table = pd.read_html(str(tableelement))[0]
-
-                        # Add column to specify MMU number
-                        table['MMU'] = i
-                        first_column = table.pop('MMU')
-                        table.insert(0, 'MMU', first_column)
                         
                     except Exception as e:
                         # Create empty table if one does not exist for animals 
