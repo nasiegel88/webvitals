@@ -38,7 +38,7 @@ git config --global user.email <Your_Git_email>
 ### Clone this repo and create the environment
 
 ```bash
-git clone https://github.com/nasiegel88/apex_webscrape.git
+git clone https://github.com/nasiegel88/webvitals.git
 
 # Create environment
 conda env create -n webvitals -f environment.yml
@@ -56,21 +56,21 @@ The above will only need to be done once however when the program is used the en
 Users should not need to edit any files with the exception of `webvitals_config.properties` which can be used to store login credentials locally so as to avoid having to enter username and password information with every query.
 
 ```bash
-apex_webscrape
-              .
-              ├── README.md
-              ├── data
-              │   └── <output files>
-              ├── .gitignore
-              ├── environment.yml
-              ├── scripts
-              │   ├── __init__.py
-              │   ├── diarrhea_observations.py
-              │   ├── location.py
-              │   ├── snomed.py
-              │   └── weight.py
-              ├── webvitals.py
-              └── webvitals_config.properties
+webvitals
+        .
+        ├── README.md
+        ├── data
+        │   └── <output files>
+        ├── .gitignore
+        ├── environment.yml
+        ├── scripts
+        │   ├── __init__.py
+        │   ├── diarrhea_observations.py
+        │   ├── location.py
+        │   ├── snomed.py
+        │   └── weight.py
+        ├── webvitals.py
+        └── webvitals_config.properties
 ```
 
 #### Saving credentials
