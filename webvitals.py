@@ -90,6 +90,9 @@ elif args.query=='conception':
     print('Running conception query')
     time.sleep(2)
     conception.conception(driver, query_list)
+    
+else:
+    print(f"'{args.query}' is not a value module!\nPlease choose valid module.")
 
 print('')
 print('Driver Title:',driver.title)
