@@ -64,7 +64,7 @@ def diarrhea_observations(driver, query_list):
             # Replace blank cells with 0
             df = data.fillna(0)
             # Replace all diarrhea obs with 1
-            df = df.replace(dict.fromkeys(['D', '+D', '~D', '-D', '-DM', 'DM', '~DM'], ['1']))
+            df = df.replace(dict.fromkeys(['D', '+D', '~D', '-D', '-DM', 'DM', 'DM+', '~DM'], ['1']))
             # Replace all move obs with 0
             df = df.replace(dict.fromkeys(['M', 'MM', '+M', '~M', '-M', '~MM', '-MM', '+MM', '+', '-', '~'], ['0']))
             # Sum monthly diarrhea obs
