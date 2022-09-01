@@ -28,53 +28,101 @@ def diarrhea_observations(driver, query_list):
         for i in query_list:
             
             # Go to Diarrhea section in Webvitals
-            driver = driver
-            driver.find_element_by_name("query_input").send_keys(i)
-            driver.find_element_by_name("submit").click()
-            
             try:
                 # Return to Animal Summary
+                driver = driver
+                driver.find_element_by_name("query_input").send_keys(i)    
+                driver.find_element_by_name("submit").click()
+
+                text = 'Animal Not Found!  Please be sure you entered a valid animal ID.'
+                
+                if text in driver.page_source:
+                    s = '''
+                    Animal Number {animal_num} Not Found! Please be sure you entered a valid animal ID.
+                    '''.format(animal_num=i)
+                    print('')
+                    print(s)
+                    print('')
+                    continue
+                
                 xpath="/html/body/table[1]/tbody/tr[3]/td/center/table[2]/tbody/tr/td[6]/a"
                 driver.find_element_by_xpath(xpath).click()
                 
+                # Extract html table
+                xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
+                tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
+                table = pd.read_html(str(tableelement))[0]
+
+                # Add column to specify MMU number
+                table['MMU'] = i
+                first_column = table.pop('MMU')
+                table.insert(0, 'MMU', first_column)
+
+                # Append dataframes into one dataframe
+                data = data.append(table, ignore_index=True)
+                
+                # Replace blank cells with 0
+                df = data.fillna(0)
+                
+                # Replace all diarrhea obs with 1
+                d_list = ['D', '+D', '+DM', '~D', '-D', '-DM', 'DM', 'DM+', '~DM', 'DMM']
+                df = df.replace(dict.fromkeys(d_list, ['1']))
+                
+                # Replace all move obs with 0
+                m_list = ['M', 'MM', '+M', '~M', '-M', '~MM', '~MMM', '-MM', '+MM', '+~M', '+', '-', '~', '~-']
+                df = df.replace(dict.fromkeys(m_list, ['0']))
+                
+                # Sum monthly diarrhea obs
+                df['Month_diarrhea_obs'] = df.iloc[:,3:31].astype(int).sum(axis=1, numeric_only=True)
+                
+                # Calculate the # of obs in a 6-month window
+                df['Rolling_sum_obs'] = df.Month_diarrhea_obs.rolling(6).sum().fillna(0)
+                
+                # Determine if animal meeting qual. for chronic issue
+                df['Chronic_diarrhea'] = np.where(
+                    df['Rolling_sum_obs'] > 45, 1, np.where(
+                    df['Rolling_sum_obs'] < 45, 0, 0)) 
+            
+                # Drop day columns
+                df.drop(df.iloc[:, 3:34], axis = 1, inplace=True)
+                
+                # Log job progress
+                progress_bar.update(1)
+                
             except NoSuchElementException:
+                # Go back if error 500 is reached
+                driver.back()
+                
                 s = '''\
-                Animal Number {animal_num} Not Found! 
-                Please be sure you entered a valid animal ID.\
+                Animal Number {animal_num} exists but no table was found.
+                This could be due to an error on the admin side.
+                {animal_num} will be included as an empty row in the resulting table.\
                 '''.format(animal_num=i)
                 print(s)
-                continue
+                
+                no_data =  {
+                    'Year':[None],
+                    'Month':[None],
+                    'Month_diarrhea_obs':[None],
+                    'Rolling_sum_obs':[None],
+                    'Chronic_diarrhea':[None]
+                }
+                missing = pd.DataFrame(no_data,
+                                       columns = list(no_data.keys()))
 
-            # Extract html table
-            xpath="/html/body/table[2]/tbody/tr/td[1]/center[1]/table"
-            tableelement= driver.find_element_by_xpath(xpath).get_attribute('outerHTML') 
-            table = pd.read_html(str(tableelement))[0]
-
-            # Add column to specify MMU number
-            table['MMU'] = i
-            first_column = table.pop('MMU')
-            table.insert(0, 'MMU', first_column)
-
-            # Append dataframes into one dataframe
-            data = data.append(table, ignore_index=True)
+                missing['MMU'] = i
+                first_column = missing.pop('MMU')
+                missing.insert(0, 'MMU', first_column)
+                
+                # Log job progress
+                progress_bar.update(1)
             
-            # Log job progess
-            progress_bar.update(1)
-
-            # Replace blank cells with 0
-            df = data.fillna(0)
-            # Replace all diarrhea obs with 1
-            df = df.replace(dict.fromkeys(['D', '+D', '~D', '-D', '-DM', 'DM', 'DM+', '~DM'], ['1']))
-            # Replace all move obs with 0
-            df = df.replace(dict.fromkeys(['M', 'MM', '+M', '~M', '-M', '~MM', '-MM', '+MM', '+', '-', '~'], ['0']))
-            # Sum monthly diarrhea obs
-            df['Month_diarrhea_obs'] = df.iloc[:,3:31].astype(int).sum(axis=1, numeric_only=True)
-            # Calcualte the # of obs in a 6-month window
-            df['Rolling_sum_obs'] = df.Month_diarrhea_obs.rolling(6).sum().fillna(0)
-            # Determine if animal meeting qual. for chronic issue
-            df['Chronic_diarrhea'] = np.where(
-                df['Rolling_sum_obs'] > 45, 1, np.where(
-                df['Rolling_sum_obs'] < 45, 0, 0))   
+            # Append missing data to final table    
+            try:
+                df = df.append(missing, ignore_index=True)
+                
+            except NameError:
+                continue 
             
         # Add object to namespace
         globals()['df'] = df
