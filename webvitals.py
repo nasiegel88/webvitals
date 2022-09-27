@@ -14,6 +14,7 @@ from scripts import diarrhea_observations
 from scripts import weight
 from scripts import snomed
 from scripts import conception
+from scripts import bbassessment
 
 # Create parser
 parser = ArgumentParser()
@@ -25,7 +26,7 @@ parser.add_argument('-f', '--file', help='text input', type=pathlib.Path)
 parser.add_argument('-q', '--query', 
                     nargs="?",
                     choices=['location', 'diarrhea_observations',
-                             'weight', 'snomed', 'conception'],
+                             'weight', 'snomed', 'conception', 'bbassessment'],
                     default='location'
                     )
 
@@ -90,6 +91,11 @@ elif args.query=='conception':
     print('Running conception query')
     time.sleep(2)
     conception.conception(driver, query_list)
+    
+elif args.query=='bbassessment':
+    print('Running bbassessment query')
+    time.sleep(2)
+    bbassessment.bbassessment(driver, query_list)
     
 else:
     print(f"'{args.query}' is not a value module!\nPlease choose valid module.")
