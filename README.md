@@ -104,7 +104,7 @@ webvitals_config.properties
       -f FILE, --file FILE  text input
       -q [{location,diarrhea_observations,weight,snomed}], --query [{location,diarrhea_observations,weight,snomed}]
 
-Animal queries can be entered as a list or text file. When entering ids as a list make sure to avoid spaces, and use commas and double quotation marks.
+Animal queries can be entered as a list or text file. When entering ids as a list make sure to avoid spaces, and use commas and double quotation marks (no quotes are also allowed but single quotes will result in an error).
 
 __Example list__
 
