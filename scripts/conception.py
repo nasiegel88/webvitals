@@ -77,7 +77,8 @@ def conception(driver, query_list):
                             'Death Type':[None],
                             'Comment':[None]
                         }
-                        table = pd.DataFrame(no_data)
+                        table = pd.DataFrame(no_data,
+                                             columns = list(no_data.keys()))
                         
                     # Add column to specify MMU number
                     table['MMU'] = i
@@ -89,13 +90,6 @@ def conception(driver, query_list):
                 
                     # Log job progress
                     progress_bar.update(1)
-                    
-                    # Reorder columns
-                    column_names = [
-                        'MMU','Conception','Unnamed: 1','Offspring','Sex','Concept Date',
-                        'Breed Type','Unnamed: 6','Sire','Unnamed: 8','Gest Days','Est','PregTerm Date',
-                        'Delivery Type','Loc Date','Location','Death Type','Comment']
-                    data = data.reindex(columns=column_names)
                     
         # Add object to namespace
     df = data

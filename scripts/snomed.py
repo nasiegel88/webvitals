@@ -70,19 +70,14 @@ def snomed(driver, query_list):
                                         'Code':[None],
                                         'Nomenclature':[None]
                                 }
-                                df = pd.DataFrame(no_data)
+                                df = pd.DataFrame(no_data,
+                                             columns = list(no_data.keys()))
                                 
                         # Add column to specify MMU number
                         df['MMU'] = i
                         first_column = df.pop('MMU')
                         df.insert(0, 'MMU', first_column)
                         table = df.ffill()
-                        
-                        # Reorder column index
-                        column_names = [
-                        'MMU', 'Date', 'Info Qualifier', 'Seq', 'Code', 'Nomenclature'
-                        ]
-                        table = table.reindex(columns=column_names)
 
                         # Append dataframes into one dataframe
                         data = data.append(table, ignore_index=True)
