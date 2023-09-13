@@ -51,6 +51,7 @@ query = "location" if args.query is None else args.query
 
 # Enter options
 options = Options()
+options.binary_location = r'C:\Program Files\Firefox\firefox.exe'
 options.add_argument("--headless")
 
 # Install Geckodriver

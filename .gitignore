@@ -1,9 +1,10 @@
-webvitals_config.properties
-geckodriver.log 
-.ipynb_checkpoints/
-.wdm/
+# Directories
 data/
-.idea/
-__pycache__/
-scripts/__pycache__
+scripts/__pycache__/
+
+# Files
 *.txt
+*.log
+
+# Login  credentia
+webvitals_config.properties
