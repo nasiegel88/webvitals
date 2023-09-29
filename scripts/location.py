@@ -1,5 +1,5 @@
 # Location
-import selenium, os, time, sys
+import selenium, os, time, sys, re
 
 import pandas as pd
 
@@ -42,6 +42,18 @@ def location(driver, query_list):
                 '''.format(animal_num=i)
                 print(s)
                 continue
+            
+            # Extract dam & sire IDs
+            
+            ## Dam
+            xpath='/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[7]/td[2]/a'
+            Dam = driver.find_element_by_xpath(xpath).text
+            Dam = re.findall(r'\d{5}', Dam)[0]
+            
+            ## Sire
+            xpath='/html/body/table[2]/tbody/tr/td[1]/table[2]/tbody/tr[8]/td[2]/a'
+            Sire = driver.find_element_by_xpath(xpath).text
+            Sire = re.findall(r'\d{5}', Sire)[0]    
 
             # Look for cause of death if animal has passed 
             try:
@@ -76,6 +88,15 @@ def location(driver, query_list):
             table['MMU'] = i
             first_column = table.pop('MMU')
             table.insert(0, 'MMU', first_column)
+            
+            # columns to specify dam and sire
+            table['Dam'] = Dam
+            second_column = table.pop('Dam')
+            table.insert(1, 'Dam', second_column)
+            
+            table['Sire'] = Sire
+            third_column = table.pop('Sire')
+            table.insert(2, 'Sire', third_column)
 
             # Add cause of death if animal has passed 
             table['Cause_of_death']=""
